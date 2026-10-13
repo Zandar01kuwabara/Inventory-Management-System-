@@ -1,0 +1,18 @@
+<?php $__env->startSection('title', 'Data Barang'); ?>
+<?php $__env->startSection('content'); ?>
+<div class="heading"><div><h1>Data Barang</h1><p class="muted">Kelola identitas, jumlah, lokasi, dan kondisi inventaris.</p></div><a class="btn" href="<?php echo e(route('barang.create')); ?>">＋ Barang Baru</a></div>
+<section class="panel">
+    <form class="panel-head" method="GET" action="<?php echo e(route('barang.index')); ?>">
+        <div><h2>Daftar inventaris</h2><p class="muted" style="margin-top:5px"><?php echo e($barang->total()); ?> data terdaftar</p></div>
+        <div class="filters"><input name="q" value="<?php echo e(request('q')); ?>" placeholder="Cari kode, nama, lokasi..."><select name="kategori_id"><option value="">Semua kategori</option><?php $__currentLoopData = $kategori; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><option value="<?php echo e($k->id); ?>" <?php if(request('kategori_id') == $k->id): echo 'selected'; endif; ?>><?php echo e($k->nama); ?></option><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></select><button class="btn" type="submit">Cari</button><a class="btn secondary" href="<?php echo e(route('barang.index')); ?>">Reset</a></div>
+    </form>
+    <div class="table-wrap"><table><thead><tr><th>Kode / Nama</th><th>Kategori</th><th>Lokasi</th><th>Jumlah</th><th>Kondisi</th><th>Aksi</th></tr></thead><tbody>
+    <?php $__empty_1 = true; $__currentLoopData = $barang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+        <tr><td><strong><?php echo e($item->nama); ?></strong><div class="muted" style="font-size:12px;margin-top:4px"><?php echo e($item->kode_barang); ?></div></td><td><?php echo e($item->kategori->nama); ?></td><td><?php echo e($item->lokasi); ?></td><td><?php echo e($item->jumlah); ?> <span class="muted">unit</span><div style="margin-top:5px"><span class="pill <?php echo e($item->status_stok === 'Menipis' ? 'warn' : ''); ?>"><?php echo e($item->status_stok); ?></span></div></td><td><?php if($item->kondisi === 'Baik'): ?><span class="pill">Baik</span><?php elseif($item->kondisi === 'Rusak'): ?><span class="pill bad">Rusak</span><?php else: ?><span class="pill warn">Perlu Perbaikan</span><?php endif; ?></td><td><div class="actions"><a class="btn secondary" href="<?php echo e(route('barang.show', $item)); ?>">Detail</a><a class="btn secondary" href="<?php echo e(route('barang.edit', $item)); ?>">Edit</a><form method="POST" action="<?php echo e(route('barang.destroy', $item)); ?>" onsubmit="return confirm('Yakin ingin menghapus barang ini?')"><?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?><button class="btn danger" type="submit">Hapus</button></form></div></td></tr>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><tr><td colspan="6" style="text-align:center;padding:30px;color:#667085">Data tidak ditemukan. Tambahkan barang baru atau ubah kata pencarian.</td></tr><?php endif; ?>
+    </tbody></table></div>
+    <div class="pagination"><?php echo e($barang->links()); ?></div>
+</section>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\Xampp\htdocs\inventory-laravel\resources\views/barang/index.blade.php ENDPATH**/ ?>
