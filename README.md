@@ -1,59 +1,75 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# StokKita — Aplikasi Manajemen Inventaris Barang
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Project Laravel untuk tugas Pertemuan 5: memindahkan konsep inventaris barang ke arsitektur Laravel.
+Nama, desain, dan data contoh dibuat berbeda dari repository referensi teman.
 
-## About Laravel
+## Fitur
+- Dashboard ringkasan jumlah barang, kategori, dan stok menipis
+- CRUD kategori
+- CRUD barang
+- Validasi form
+- Pencarian dan filter kategori
+- Pagination
+- Seeder data contoh
+- Blade layout responsif sederhana
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Persyaratan
+- PHP 8.2+
+- Composer
+- MySQL/MariaDB (misalnya dari XAMPP)
+- Ekstensi PHP yang dibutuhkan Laravel aktif
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Cara memasang
+1. Pastikan Composer dan PHP sudah bisa dijalankan dari terminal.
+2. Ekstrak folder project ini.
+3. Buka terminal di folder `StokKita-Laravel`.
+4. Jalankan:
+   ```bash
+   composer create-project laravel/laravel . 
+   ```
+   **Penting:** perintah di atas hanya dipakai jika folder ini masih kosong. Karena file aplikasi StokKita sudah tersedia, cara yang disarankan adalah membuat project Laravel baru dahulu:
+   ```bash
+   composer create-project laravel/laravel stok-kita
+   ```
+   Lalu salin/merge folder `app`, `database`, `resources`, dan `routes` dari paket ini ke folder `stok-kita`, timpa file dengan nama sama, dan lanjutkan langkah berikut.
+5. Salin `.env.example` menjadi `.env` (di Windows bisa menggunakan File Explorer atau `copy .env.example .env`).
+6. Buat database MySQL bernama `stok_kita`.
+7. Atur bagian database di `.env`:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=stok_kita
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+8. Jalankan:
+   ```bash
+   php artisan key:generate
+   php artisan migrate --seed
+   php artisan serve
+   ```
+9. Buka `http://127.0.0.1:8000`.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Screenshot untuk laporan
+Ambil screenshot:
+1. Halaman dashboard (`/`)
+2. Daftar barang (`/barang`)
+3. Form tambah barang (`/barang/create`)
+4. Form edit barang (`/barang/{id}/edit`)
+5. Daftar kategori (`/kategori`)
+6. Terminal setelah `php artisan migrate --seed`
+7. Daftar route dari `php artisan route:list`
 
-## Learning Laravel
+## Penjelasan arsitektur MVC
+- **Model** (`Barang`, `Kategori`): mengatur representasi data dan relasi database.
+- **View** (`resources/views`): menampilkan dashboard, daftar, dan form melalui Blade.
+- **Controller** (`DashboardController`, `BarangController`, `KategoriController`): menerima request, memvalidasi input, berinteraksi dengan model, lalu mengembalikan view atau redirect.
+- **Migration**: mendefinisikan struktur tabel dengan kode yang dapat dilacak versinya.
+- **Seeder**: mengisi kategori dan barang contoh agar aplikasi bisa langsung diuji.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Alur contoh tambah barang
+Pengguna membuka form `/barang/create` → mengisi form → form mengirim request POST → `BarangController@store` memvalidasi input → data disimpan melalui model Eloquent → pengguna diarahkan kembali ke `/barang` dengan pesan sukses → data tampil di daftar barang.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Catatan
+Paket ini berisi file aplikasi yang perlu digabungkan ke kerangka Laravel standar. Folder `vendor` dan file inti Laravel tidak disertakan karena dihasilkan oleh Composer.
